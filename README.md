@@ -8,6 +8,7 @@ Backend Developer Assessment
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Start The Server](#start-the-server)
 - [API Details](#api-details)
 
 ### Getting Started
@@ -28,6 +29,9 @@ cd enverx-be-developer-assignment
 
 # Install dependencies
 npm install
+```
+### Start The Server
+npm start
 ```
 
 ### API Details
