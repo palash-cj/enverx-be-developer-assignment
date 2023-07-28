@@ -8,6 +8,7 @@ Backend Developer Assessment
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Environment](#environment)
   - [Start The Server](#start-the-server)
 - [API Details](#api-details)
 
@@ -30,12 +31,12 @@ cd enverx-be-developer-assignment
 # Install dependencies
 npm install
 ```
+### Environment
+Mongo_Url(url of the mongodb)
+PORT
 ### Start The Server
 npm start
-```
-
 ### API Details
-
 - `GET /posts` - Get all blog posts.
 - `GET /posts/:id` - Get a specific blog post by ID.
 - `POST /posts` - Create a new blog post.
