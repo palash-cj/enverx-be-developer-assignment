@@ -67,7 +67,7 @@ const createPost=async(req,res,next)=>{
         if(data.data!==null){
             res.status(200).send(sendResponse("API worked successfully!", data.data));
         }else{
-            next(createError(data.status, data))
+            next(createError(data.status, data.message))
         }
     } catch (error) {
         console.log(error)

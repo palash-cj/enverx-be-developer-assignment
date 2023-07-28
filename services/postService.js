@@ -42,48 +42,70 @@ class PostService{
           description,
           author
         });
+
+        const validationError = newPost.validateSync();
+        if (validationError) {
+        const errors = Object.values(validationError.errors).map(err => err.message);
+            return {
+                data: null,
+                status: 400,
+                message: errors.join(', ')
+            };
+        }
       
         await newPost.save()
         return {data:"Successfully created new post"}
     }
 
-    async updatePost(req){
-        const postId = req.params.id;
-       
-        if (!mongoose.Types.ObjectId.isValid(postId)) {
-            return {
-             data:null,
-             status:400,
-             message:"Invalid id"
-            }
+    async updatePost(req) {
+    const postId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+        return {
+        data: null,
+        status: 400,
+        message: 'Invalid id'
+        };
+    }
+
+    
+        const exist = await Post.findById(postId);
+        if (exist === null) {
+        return {
+            data: null,
+            status: 400,
+            message: 'Post not found'
+        };
         }
 
-        const exist=await Post.findById(postId)
-        if(exist===null){
-            return {
-                data:null,
-                status:400,
-                message:"Invalid id"
-               }
-        }
         const { title, description } = req.body;
-        const updates = { $set: {} };
 
+        const updates = { updatedAt: Date.now() };
         if (title) {
-            updates.$set['title'] = title;
+        updates.title = title;
         }
         if (description) {
-            updates.$set['description'] = description;
+        updates.description = description;
         }
-        updates.$set['updatedAt']=Date.now();
-        await Post.findByIdAndUpdate(
-            postId,
-            updates,
-            { new: true }
-        )
+
+        exist.set(updates);
+        const validationError = exist.validateSync();
+        if (validationError) {
+        const errors = Object.values(validationError.errors).map(err => err.message);
         return {
-            data:"Post updated successfully"
+            data: null,
+            status: 400,
+            message: errors.join(', ')
+        };
         }
+
+        const updatedPost = await exist.save();
+
+        return {
+        data: updatedPost,
+        status: 200,
+        message: 'Post updated successfully'
+        };
     }
 
     async deletePost(req){
